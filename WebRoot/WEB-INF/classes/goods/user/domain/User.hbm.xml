@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="goods.user.domain.User" table="t_user">
+		
+		<id name="uid">
+			<generator class="assigned"/>
+		</id>
+		<property name="loginname"/>
+		<property name="loginpass"/>
+		<property name="email"/>
+		<property name="status"/>
+		<property name="activationCode"/>
+		
+		<!-- 对购物项的一对多 -->
+		<set name="cartItems" inverse="true" lazy="false" cascade="delete">
+			<key column="uid"/>
+			<one-to-many class="goods.cart.domain.CartItem"/>
+		</set>
+		
+		<!-- 对订单项的一对多 -->
+		<set name="orders" inverse="true" lazy="false" cascade="delete">
+			<key column="uid"/>
+			<one-to-many class="goods.order.domain.Order"/>
+		</set>
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="goods.order.domain.Order" table="t_order">
+		<id name="oid">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="ordertime"/>
+		<property name="total"/>
+		<property name="status"/>
+		<property name="address"/>
+		
+		<!-- 订单与用户关联配置 -->
+		<many-to-one name="owner" lazy="false" class="goods.user.domain.User" column="uid"/>
+	
+		<!-- 订单与订单项关联配置 -->
+		<set name="orderItemList" lazy="false" cascade="all">
+			<key column="oid"/>
+			<one-to-many class="goods.order.domain.OrderItem"/>
+		</set>
+	</class>
+</hibernate-mapping>

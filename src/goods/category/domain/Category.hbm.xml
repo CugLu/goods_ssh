@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="goods.category.domain.Category" table="t_category">
+		
+		<id name="cid">
+			<generator class="assigned" />
+		</id>
+		
+		<property name="cname"/>
+		<property name="desc" column="[desc]"/>
+		
+		<!-- 二级对一级 -->
+		<many-to-one name="parent" class="goods.category.domain.Category" column="pid">
+		</many-to-one>
+		
+		<!-- 一级对二级 -->
+		<!-- 用list没有成功，改的set，呜呜呜 -->
+		<set name="children" cascade="delete" inverse="true" lazy="false" order-by="orderBy">
+   			<key column="pid" />
+   			<one-to-many class="goods.category.domain.Category"/>
+  		</set>
+  		
+  		<!-- 对book的一对多 -->
+  		<set name="books" inverse="true" cascade="delete">
+			<key column="cid"/>
+			<one-to-many class="goods.book.domain.Book"/>
+		</set>
+		
+	</class>
+</hibernate-mapping>

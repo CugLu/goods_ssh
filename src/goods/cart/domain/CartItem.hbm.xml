@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="goods.cart.domain.CartItem" table="t_cartitem">
+		<id name="cartItemId">
+			<generator class="assigned"/>
+		</id>
+		<property name="quantity"/>
+		
+		<many-to-one name="book" lazy="false" class="goods.book.domain.Book" column="bid"></many-to-one>
+		
+		<many-to-one name="user" lazy="false" class="goods.user.domain.User" column="uid"/>
+		
+	</class>
+</hibernate-mapping>

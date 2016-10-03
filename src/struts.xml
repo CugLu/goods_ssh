@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 设置开发模式为false -->
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.multipart.saveDir" value="/tmp" />
+
+	<bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
+		name="myRequestParser" class="goods.intercept.background.RequestParseWrapper"
+		scope="default" optional="true" />
+	<constant name="struts.multipart.parser" value="myRequestParser" />
+
+	<package name="goods_ssh" extends="struts-default" namespace="/">
+
+		<!-- 配置自定义拦截器 -->
+		<interceptors>
+			<interceptor name="foregroundInterceptor"
+				class="goods.intercept.foreground.ForegroundInterceptor" />
+			<interceptor name="backgroundInterceptor"
+				class="goods.intercept.background.BackgroundInterceptor" />
+		</interceptors>
+
+		<global-results>
+			<result name="msg">/jsps/msg.jsp</result>
+			<result name="adminmsg">/adminjsps/msg.jsp</result>
+			<result name="loginfail">/adminjsps/login.jsp</result>
+		</global-results>
+
+		<!-- 配置首页访问的Action -->
+		<action name="index" class="indexAction">
+			<result name="index">/jsps/main.jsp</result>
+		</action>
+
+		<!-- 配置用户模块的Action -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="regist">/jsps/user/regist.jsp</result>
+			<result name="login">/jsps/user/login.jsp</result>
+			<result name="loginSuccess" type="redirectAction">index</result>
+			<result name="quit" type="redirectAction">index</result>
+			<result name="pwd">/jsps/user/pwd.jsp</result>
+
+			<interceptor-ref name="foregroundInterceptor">
+				<param name="excludeMethods">login,regist</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+
+		</action>
+
+		<!-- 验证码Action -->
+		<action name="checkImg" class="verifyCodeAction"></action>
+
+		<!-- 分类模块的Action -->
+		<action name="category_*" class="categoryAction" method="{1}">
+			<result name="left">/jsps/left.jsp</result>
+		</action>
+
+		<!-- 图书模块的Action -->
+		<action name="book_*" class="bookAction" method="{1}">
+			<result name="list">/jsps/book/list.jsp</result>
+			<result name="desc">/jsps/book/desc.jsp</result>
+		</action>
+
+		<!-- 购物车模块的Action -->
+		<action name="cart_*" class="cartItemAction" method="{1}">
+			<result name="list">/jsps/cart/list.jsp</result>
+			<result name="showitem">/jsps/cart/showitem.jsp</result>
+
+			<interceptor-ref name="foregroundInterceptor" />
+			<interceptor-ref name="defaultStack" />
+
+		</action>
+
+		<!-- 订单模块的Action -->
+		<action name="order_*" class="orderAction" method="{1}">
+			<result name="list">/jsps/order/list.jsp</result>
+			<result name="ordersucc">/jsps/order/ordersucc.jsp</result>
+			<result name="desc">/jsps/order/desc.jsp</result>
+			<result name="pay">/jsps/order/pay.jsp</result>
+
+			<interceptor-ref name="foregroundInterceptor" />
+			<interceptor-ref name="defaultStack" />
+
+		</action>
+
+		<!-- 配置后台首页访问的Action -->
+		<action name="admin" class="adminIndexAction">
+			<result name="adminindex">/adminjsps/admin/main.jsp</result>
+			
+			<interceptor-ref name="backgroundInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			
+		</action>
+
+		<!-- 配置后台用户模块的Action -->
+		<action name="admin_*" class="adminAction" method="{1}">
+			<result name="login">/adminjsps/login.jsp</result>
+			<result name="index" type="redirectAction">admin</result>
+			<result name="quit">/adminjsps/login.jsp</result>
+			
+			<interceptor-ref name="backgroundInterceptor">
+				<param name="excludeMethods">login</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+			
+		</action>
+
+		<!-- 配置后台分类模块的Action -->
+		<action name="adminCategory_*" class="adminCategoryAction"
+			method="{1}">
+			<result name="list">/adminjsps/admin/category/list.jsp</result>
+			<result name="add2">/adminjsps/admin/category/add2.jsp</result>
+			<result name="edit">/adminjsps/admin/category/edit.jsp</result>
+			<result name="edit2">/adminjsps/admin/category/edit2.jsp</result>
+			
+			<interceptor-ref name="backgroundInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			
+		</action>
+
+		<!-- 配置后台订单模块的Action -->
+		<action name="adminOrder_*" class="adminOrderAction" method="{1}">
+			<result name="list">/adminjsps/admin/order/list.jsp</result>
+			<result name="desc">/adminjsps/admin/order/desc.jsp</result>
+			
+			<interceptor-ref name="backgroundInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			
+		</action>
+
+		<!-- 配置后台图书模块的Action -->
+		<action name="adminBook_*" class="adminBookAction" method="{1}">
+			<result name="list">/adminjsps/admin/book/list.jsp</result>
+			<result name="left">/adminjsps/admin/book/left.jsp</result>
+			<result name="add">/adminjsps/admin/book/add.jsp</result>
+			<result name="desc">/adminjsps/admin/book/desc.jsp</result>
+			
+			<interceptor-ref name="backgroundInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			
+		</action>
+
+	</package>
+
+</struts>

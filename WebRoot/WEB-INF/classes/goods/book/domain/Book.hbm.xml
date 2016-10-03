@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="goods.book.domain.Book" table="t_book">
+		<id name="bid">
+			<generator class="assigned"/>
+		</id>
+		<property name="bname"/>
+		<property name="author"/>
+		<property name="price"/>
+		<property name="currPrice"/>
+		<property name="discount"/>
+		<property name="press"/>
+		<property name="publishtime"/>
+		<property name="edition"/>
+		<property name="pageNum"/>
+		<property name="wordNum"/>
+		<property name="printtime"/>
+		<property name="booksize"/>
+		<property name="paper"/>
+		<property name="image_w"/>
+		<property name="image_b"/>
+		
+		<many-to-one name="category" lazy="false" class="goods.category.domain.Category" column="cid"/>
+		
+	</class>
+</hibernate-mapping>
